@@ -1,5 +1,6 @@
 package com.example.githubapp.feature_search.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,16 +23,29 @@ class GithubUserViewModel @Inject constructor(
 
      fun getUserDetail(name: String){
 
-         viewModelScope.launchCatchError(
-             block = {
-                 val response =  githubUserUsecase.invoke(name)
-                 _user.value = response
-             },
-             onError = {
+//         viewModelScope.launchCatchError(
+//             block = {
+//                 val response =  githubUserUsecase.invoke(name)
+//                 _user.value = response
+//                 Log.d("FATAL VM", "getUserDetail: " + user)
+//             },
+//             onError = {
+//                 _user.value = Result.Error()
+//             }
+//
+//         )
 
+         viewModelScope.launch {
+             when(val response = githubUserUsecase.invoke(name)){
+                 is Result.Success -> {
+                     _user.value = response
+                 }
+                 is Result.Error -> {
+                     _user.value = Result.Error(response.cause,response.code,response.errorMessage)
+                 }
              }
+         }
 
-         )
     }
 
 }
