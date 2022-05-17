@@ -1,6 +1,6 @@
 package com.example.githubapp.core.di.component
 
-import com.example.githubapp.core.di.context.PerActivity
+import com.example.githubapp.core.di.scopes.PerActivity
 import com.example.githubapp.core.di.modules.ActivityModule
 import dagger.Component
 

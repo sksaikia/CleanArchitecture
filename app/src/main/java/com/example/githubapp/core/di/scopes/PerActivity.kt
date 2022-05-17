@@ -1,4 +1,4 @@
-package com.example.githubapp.core.di.context
+package com.example.githubapp.core.di.scopes
 
 import javax.inject.Scope
 

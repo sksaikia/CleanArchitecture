@@ -1,5 +1,6 @@
 package com.example.githubapp.core.di.modules
 
+import com.example.githubapp.common.network.GithubAPI
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -11,15 +12,26 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
+//    @Provides
+//    @Singleton
+//    fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit{
+//        return Retrofit.Builder()
+//            .baseUrl(GithubAPI.BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .client(okHttpClient)
+//            .build()
+//    }
+
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit{
+    fun providesDictionaryApi() : GithubAPI {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(GithubAPI.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build()
+            .create(GithubAPI::class.java)
     }
+
 
     @Provides
     @Singleton
