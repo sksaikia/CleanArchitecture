@@ -20,6 +20,7 @@ import com.example.githubapp.common.extensions.hide
 import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.core.utils.injectViewModel
+import com.example.githubapp.databinding.FragmentUserBinding
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.presentation.GithubUserViewModel
 import com.google.android.material.button.MaterialButton
@@ -42,6 +43,8 @@ class UserFragment : Fragment() {
     private lateinit var parent : ConstraintLayout
     private lateinit var userDetails : CardView
 
+    private lateinit var binding: FragmentUserBinding
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity?.application as MainApplication).component.inject(this)
@@ -50,39 +53,43 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_user, container, false)
-
-        initializeViews(view)
-        setOnClickListeners()
-
+     //   val view =  inflater.inflate(R.layout.fragment_user, container, false)
+        binding = FragmentUserBinding.inflate(layoutInflater)
         viewModel = injectViewModel(viewModelFactory)
 
         subscribeToLiveData()
 
-        return view
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setOnClickListeners()
+
+    }
+
+
     private fun setOnClickListeners() {
-        searchButton.setOnClickListener {
-            var userName = searchText.text.toString().trim()
+        binding.searchButton.setOnClickListener {
+            var userName = binding.searchText.text.toString().trim()
             if(userName.isNotBlank()){
                 viewModel.getUserDetail(userName)
-                progressBar.show()
+                binding.progressBar.show()
             }
         }
     }
 
-    private fun initializeViews(view: View) {
-        searchButton = view.findViewById(R.id.search_button)
-        searchText = view.findViewById(R.id.search_text)
-        progressBar = view.findViewById(R.id.progress_bar)
-        userName = view.findViewById(R.id.user_name)
-        userImage = view.findViewById(R.id.user_image)
-        userRepository = view.findViewById(R.id.user_repositories)
-        parent = view.findViewById(R.id.parent)
-        userDetails = view.findViewById(R.id.user_details)
-    }
+//    private fun initializeViews(view: View) {
+//        searchButton = view.findViewById(R.id.search_button)
+//        searchText = view.findViewById(R.id.search_text)
+//        progressBar = view.findViewById(R.id.progress_bar)
+//        userName = view.findViewById(R.id.user_name)
+//        userImage = view.findViewById(R.id.user_image)
+//        userRepository = view.findViewById(R.id.user_repositories)
+//        parent = view.findViewById(R.id.parent)
+//        userDetails = view.findViewById(R.id.user_details)
+//    }
 
     private fun subscribeToLiveData() {
         viewModel.user.observe(viewLifecycleOwner) {
@@ -95,15 +102,16 @@ class UserFragment : Fragment() {
 
     private fun onFailureGetData(it: Result.Error) {
         Log.d("FATAL TEST", "onFailureGetData: " + it)
-        progressBar.hide()
-        Snackbar.make(parent,"Error Occured",Snackbar.LENGTH_SHORT).show()
+        binding.progressBar.hide()
+        Snackbar.make(binding.parent,"Error Occured",Snackbar.LENGTH_SHORT).show()
     }
 
     private fun onSuccessGetData(data: User) {
-        userDetails.show()
-        progressBar.hide()
-        userName.text = data?.name
-        userRepository.text = "Public Repositories : ${data?.public_repos}"
+        Log.d("FATAL SUCCESS", "success: " + data)
+        binding.progressBar.hide()
+        binding.userDetails.root.show()
+        binding.userDetails.userName.text = data?.name
+        binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"
         //Set the image here
     }
 
