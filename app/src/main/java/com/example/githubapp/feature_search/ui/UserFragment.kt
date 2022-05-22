@@ -88,20 +88,28 @@ class UserFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> onSuccessGetData(it.data)
+                is Result.Loading -> showProgressBar(true)
                 is Result.Error -> onFailureGetData(it)
             }
         }
     }
 
+    private fun showProgressBar(state : Boolean) {
+        if (state)
+            binding.progressBar.show()
+        else
+            binding.progressBar.hide()
+    }
+
     private fun onFailureGetData(it: Result.Error) {
         Log.d("FATAL TEST", "onFailureGetData: " + it)
-        binding.progressBar.hide()
+        showProgressBar(false)
         Snackbar.make(binding.parent,"Error Occured",Snackbar.LENGTH_SHORT).show()
     }
 
     private fun onSuccessGetData(data: User) {
         Log.d("FATAL SUCCESS", "success: " + data)
-        binding.progressBar.hide()
+        showProgressBar(false)
         binding.userDetails.root.show()
         binding.userDetails.userName.text = data?.name
         binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"

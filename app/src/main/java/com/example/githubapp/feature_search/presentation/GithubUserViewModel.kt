@@ -22,19 +22,7 @@ class GithubUserViewModel @Inject constructor(
     val user : LiveData<Result<User>> = _user
 
      fun getUserDetail(name: String){
-
-//         viewModelScope.launchCatchError(
-//             block = {
-//                 val response =  githubUserUsecase.invoke(name)
-//                 _user.value = response
-//                 Log.d("FATAL VM", "getUserDetail: " + user)
-//             },
-//             onError = {
-//                 _user.value = Result.Error()
-//             }
-//
-//         )
-
+         _user.value = Result.Loading
          viewModelScope.launch {
              when(val response = githubUserUsecase.invoke(name)){
                  is Result.Success -> {
