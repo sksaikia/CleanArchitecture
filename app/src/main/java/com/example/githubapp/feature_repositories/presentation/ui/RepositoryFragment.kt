@@ -1,4 +1,4 @@
-package com.example.githubapp.feature_repositories.ui
+package com.example.githubapp.feature_repositories.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -13,26 +13,18 @@ import com.example.githubapp.MainApplication
 import com.example.githubapp.common.extensions.hide
 import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
+import com.example.githubapp.core.presentation.BaseDaggerFragment
 import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentRepositoryBinding
 import com.example.githubapp.feature_repositories.domain.model.Repo
 import com.example.githubapp.feature_repositories.presentation.viewmodel.GithubRepoViewModel
-import com.example.githubapp.feature_repositories.ui.adapter.GithubRepoAdapter
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.GithubRepoAdapter
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class RepositoryFragment : Fragment() {
+class RepositoryFragment : BaseDaggerFragment<FragmentRepositoryBinding,GithubRepoViewModel>() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: GithubRepoViewModel
-
-    private lateinit var binding : FragmentRepositoryBinding
     private var username = ""
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity?.application as MainApplication).component.inject(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,20 +36,10 @@ class RepositoryFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentRepositoryBinding.inflate(layoutInflater)
-        viewModel = injectViewModel(viewModelFactory)
-
-        viewModel.getUserRepos(username)
-
+    override fun init() {
+        super.init()
         subscribeToLiveData()
-
-        return binding.root
-
+        viewModel.getUserRepos(username)
     }
 
     private fun subscribeToLiveData() {
@@ -92,5 +74,15 @@ class RepositoryFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
     }
+
+    override fun initiateViewModel(viewModelProvider: ViewModelProvider) =
+        viewModelProvider[GithubRepoViewModel::class.java]
+
+    override fun injectFragment() {
+        (activity?.application as MainApplication).component.inject(this)
+    }
+
+    override fun inflateLayout(layoutInflater: LayoutInflater) =
+        FragmentRepositoryBinding.inflate(layoutInflater)
 
 }

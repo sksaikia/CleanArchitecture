@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.core.di.viewModel.ViewModelFactory
 import com.example.githubapp.core.di.viewModel.ViewModelKey
 import com.example.githubapp.feature_repositories.presentation.viewmodel.GithubRepoViewModel
-import com.example.githubapp.feature_search.presentation.GithubUserViewModel
+import com.example.githubapp.feature_search.presentation.viewmodels.GithubUserViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

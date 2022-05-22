@@ -1,4 +1,4 @@
-package com.example.githubapp.feature_search.presentation
+package com.example.githubapp.feature_search.presentation.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -1,4 +1,4 @@
-package com.example.githubapp.feature_search.ui
+package com.example.githubapp.feature_search.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -13,49 +13,19 @@ import com.example.githubapp.R
 import com.example.githubapp.common.extensions.hide
 import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
+import com.example.githubapp.core.presentation.BaseDaggerFragment
 import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentUserBinding
-import com.example.githubapp.feature_repositories.ui.RepositoryFragment
+import com.example.githubapp.feature_repositories.presentation.ui.RepositoryFragment
 import com.example.githubapp.feature_search.domain.model.User
-import com.example.githubapp.feature_search.presentation.GithubUserViewModel
+import com.example.githubapp.feature_search.presentation.viewmodels.GithubUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 
-class UserFragment : Fragment() {
+class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel>() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: GithubUserViewModel
-
-    private lateinit var binding: FragmentUserBinding
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity?.application as MainApplication).component.inject(this)
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-     //   val view =  inflater.inflate(R.layout.fragment_user, container, false)
-        binding = FragmentUserBinding.inflate(layoutInflater)
-        viewModel = injectViewModel(viewModelFactory)
-
-        subscribeToLiveData()
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setOnClickListeners()
-
-    }
-
-
-    private fun setOnClickListeners() {
+    private fun setUpClickListeners() {
         binding.searchButton.setOnClickListener {
             var userName = binding.searchText.text.toString().trim()
             if(userName.isNotBlank()){
@@ -72,6 +42,12 @@ class UserFragment : Fragment() {
             goToRepoFrag(repoFragment)
 
         }
+    }
+
+    override fun init() {
+        super.init()
+        subscribeToLiveData()
+        setUpClickListeners()
     }
 
     private fun goToRepoFrag(repoFragment: RepositoryFragment) {
@@ -115,5 +91,15 @@ class UserFragment : Fragment() {
         binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"
         //Set the image here
     }
+
+    override fun initiateViewModel(viewModelProvider: ViewModelProvider) =
+        viewModelProvider[GithubUserViewModel::class.java]
+
+    override fun injectFragment() {
+        (activity?.application as MainApplication).component.inject(this)
+    }
+
+    override fun inflateLayout(layoutInflater: LayoutInflater) =
+        FragmentUserBinding.inflate(layoutInflater)
 
 }

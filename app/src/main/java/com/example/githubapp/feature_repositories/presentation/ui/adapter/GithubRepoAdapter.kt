@@ -1,13 +1,11 @@
-package com.example.githubapp.feature_repositories.ui.adapter
+package com.example.githubapp.feature_repositories.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubapp.R
-import com.example.githubapp.databinding.UserDetailsBinding.inflate
 import com.example.githubapp.feature_repositories.domain.model.Repo
 
 class GithubRepoAdapter : RecyclerView.Adapter<GithubRepoAdapter.GithubRepoViewHolder>() {

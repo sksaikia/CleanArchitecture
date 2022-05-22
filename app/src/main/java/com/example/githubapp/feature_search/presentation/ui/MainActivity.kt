@@ -1,8 +1,7 @@
-package com.example.githubapp.feature_search.ui
+package com.example.githubapp.feature_search.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.githubapp.R
 import com.example.githubapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
