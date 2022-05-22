@@ -14,6 +14,7 @@ import com.example.githubapp.common.extensions.hide
 import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.core.presentation.BaseDaggerFragment
+import com.example.githubapp.core.utils.ImageHandler
 import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentUserBinding
 import com.example.githubapp.feature_repositories.presentation.ui.RepositoryFragment
@@ -90,6 +91,9 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
         binding.userDetails.userName.text = data?.name
         binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"
         //Set the image here
+        if (data.avatar_url!=null){
+            ImageHandler.loadImage(data.avatar_url,binding.userDetails.userImage)
+        }
     }
 
     override fun initiateViewModel(viewModelProvider: ViewModelProvider) =
