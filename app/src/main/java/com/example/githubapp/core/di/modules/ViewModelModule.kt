@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.core.di.viewModel.ViewModelFactory
 import com.example.githubapp.core.di.viewModel.ViewModelKey
+import com.example.githubapp.feature_repositories.presentation.viewmodel.GithubRepoViewModel
 import com.example.githubapp.feature_search.presentation.GithubUserViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,6 +17,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GithubUserViewModel::class)
     abstract fun bindUserViewModel(viewModel: GithubUserViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GithubRepoViewModel::class)
+    abstract fun bindRepoViewModel(viewModel: GithubRepoViewModel): ViewModel
+
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

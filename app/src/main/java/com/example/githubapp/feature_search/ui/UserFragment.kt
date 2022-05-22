@@ -3,16 +3,10 @@ package com.example.githubapp.feature_search.ui
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.MainApplication
 import com.example.githubapp.R
@@ -21,9 +15,9 @@ import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentUserBinding
+import com.example.githubapp.feature_repositories.ui.RepositoryFragment
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.presentation.GithubUserViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -33,15 +27,6 @@ class UserFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: GithubUserViewModel
-
-    private lateinit var searchButton: MaterialButton
-    private lateinit var searchText : EditText
-    private lateinit var progressBar : ProgressBar
-    private lateinit var userImage : ImageView
-    private lateinit var userName : TextView
-    private lateinit var userRepository : TextView
-    private lateinit var parent : ConstraintLayout
-    private lateinit var userDetails : CardView
 
     private lateinit var binding: FragmentUserBinding
 
@@ -78,18 +63,26 @@ class UserFragment : Fragment() {
                 binding.progressBar.show()
             }
         }
+
+        binding.userDetails.root.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("user",binding.searchText.text.toString())
+            var repoFragment = RepositoryFragment()
+            repoFragment.arguments = bundle
+            goToRepoFrag(repoFragment)
+
+        }
     }
 
-//    private fun initializeViews(view: View) {
-//        searchButton = view.findViewById(R.id.search_button)
-//        searchText = view.findViewById(R.id.search_text)
-//        progressBar = view.findViewById(R.id.progress_bar)
-//        userName = view.findViewById(R.id.user_name)
-//        userImage = view.findViewById(R.id.user_image)
-//        userRepository = view.findViewById(R.id.user_repositories)
-//        parent = view.findViewById(R.id.parent)
-//        userDetails = view.findViewById(R.id.user_details)
-//    }
+    private fun goToRepoFrag(repoFragment: RepositoryFragment) {
+        val fragmentName = repoFragment.toString()
+        activity?.supportFragmentManager?.
+        beginTransaction()?.
+        replace(R.id.container,repoFragment)
+            ?.addToBackStack(fragmentName)
+            ?.commit()
+    }
+
 
     private fun subscribeToLiveData() {
         viewModel.user.observe(viewLifecycleOwner) {
