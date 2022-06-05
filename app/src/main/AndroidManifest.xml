@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubApp">
         <activity
-            android:name="com.example.githubapp.feature_search.presentation.ui.MainActivity"
+            android:name="com.example.githubapp.feature_search.presentation.ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

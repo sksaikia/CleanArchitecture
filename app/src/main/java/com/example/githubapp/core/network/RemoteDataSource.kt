@@ -11,7 +11,6 @@ import java.net.UnknownHostException
 
 open class RemoteDataSource {
     open suspend fun <T> safeApiCall(apiCall : suspend () -> T) : Result<T> {
-        Log.d("NETWORK CALL", "safeApiCall: $apiCall" )
         return withContext(Dispatchers.IO){
             try {
                 Result.Success(apiCall.invoke())

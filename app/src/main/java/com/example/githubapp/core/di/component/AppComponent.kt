@@ -6,7 +6,7 @@ import com.example.githubapp.core.di.modules.ViewModelModule
 import com.example.githubapp.feature_repositories.di.GithubRepoModule
 import com.example.githubapp.feature_repositories.presentation.ui.RepositoryFragment
 import com.example.githubapp.feature_search.di.GitHubUserModule
-import com.example.githubapp.feature_search.presentation.ui.UserFragment
+import com.example.githubapp.feature_search.presentation.ui.fragment.UserFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

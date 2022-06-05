@@ -1,12 +1,8 @@
-package com.example.githubapp.feature_search.presentation.ui
+package com.example.githubapp.feature_search.presentation.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.MainApplication
 import com.example.githubapp.R
@@ -15,13 +11,11 @@ import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.core.presentation.BaseDaggerFragment
 import com.example.githubapp.core.utils.ImageHandler
-import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentUserBinding
 import com.example.githubapp.feature_repositories.presentation.ui.RepositoryFragment
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.presentation.viewmodels.GithubUserViewModel
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
 
 
 class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel>() {
