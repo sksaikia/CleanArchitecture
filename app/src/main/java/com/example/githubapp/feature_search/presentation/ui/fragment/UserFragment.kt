@@ -3,6 +3,7 @@ package com.example.githubapp.feature_search.presentation.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.MainApplication
 import com.example.githubapp.R
@@ -22,16 +23,32 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
 
     private fun setUpClickListeners() {
         binding.searchButton.setOnClickListener {
-            var userName = binding.searchText.text.toString().trim()
+            var userName = "sksaikia"
             if(userName.isNotBlank()){
                 viewModel.getUserDetail(userName)
+//                viewModel.getUserDetail(userName).observe(viewLifecycleOwner, Observer {
+//                    Log.d("FATAL", "setUpClickListeners: " + it?.name)
+////                    when (it) {
+////                        is Result.Success -> onSuccessGetData(it.data)
+////                        is Result.Loading -> showProgressBar(true)
+////                        is Result.Error -> onFailureGetData(it)
+////                    }
+//                })
+
+            viewModel.user.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                        is Result.Success -> onSuccessGetData(it.data)
+                        is Result.Loading -> showProgressBar(true)
+                        is Result.Error -> onFailureGetData(it)
+                    }
+            })
                 binding.progressBar.show()
             }
         }
 
         binding.userDetails.root.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("user",binding.searchText.text.toString())
+            bundle.putString("user","sksaikia")
             var repoFragment = RepositoryFragment()
             repoFragment.arguments = bundle
             goToRepoFrag(repoFragment)

@@ -36,6 +36,13 @@ class UserMapper {
         )
     }
 
+    fun mapUserToUserEntity(user : User) : GithubUserEntity {
+        return GithubUserEntity(
+            userName = user.name!!,
+            userRepository = user.public_repos
+        )
+    }
+
     fun mapUserDTOToEntity(dto : UserDTO) : GithubUserEntity {
         return GithubUserEntity(
             userName = dto.login,

@@ -1,5 +1,6 @@
 package com.example.githubapp.feature_search.data.local.entity
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
@@ -12,5 +13,5 @@ interface GithubUserDao {
     suspend fun deleteUser(user : String)
 
     @Query("SELECT * FROM githubuserentity WHERE userName is :user")
-    suspend fun getUser(user: String) : GithubUserEntity
+    suspend fun getUser(user: String) : GithubUserEntity?
 }
