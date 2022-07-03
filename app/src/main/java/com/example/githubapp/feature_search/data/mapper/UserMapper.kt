@@ -24,7 +24,7 @@ class UserMapper {
     fun mapUserEntityToDomain(userEntity: GithubUserEntity) : User {
         return User(
             public_repos = userEntity.userRepository,
-            login = userEntity.userName,
+            login = "",
             avatar_url = "",
             bio = "",
             company = "",
@@ -32,7 +32,7 @@ class UserMapper {
             followers = 0,
             following = 0,
             location = "",
-            name = "",
+            name = userEntity.userName,
         )
     }
 

@@ -1,5 +1,6 @@
 package com.example.githubapp.feature_search.data.repository
 
+import android.util.Log
 import com.example.githubapp.common.network.GithubAPI
 import com.example.githubapp.core.network.RemoteDataSource
 import com.example.githubapp.core.network.Result
@@ -38,8 +39,8 @@ class GithubUserRepositoryImpl(
 //
 //        emit(getUserFromDb(name))
         emit(Result.Loading(true))
-      //  val userFromDb = getUserFromDb(name)
-    //    emit(Result.Success(userFromDb))
+        val userFromDb = getUserFromDb(name)
+        emit(Result.Success(userFromDb))
         val userFromApi = try {
             api.getUserDetails(name)
         } catch (e : Exception) {
@@ -47,6 +48,7 @@ class GithubUserRepositoryImpl(
             null
         }
         userFromApi?.let { userData ->
+            Log.d("FATAL", "getUserInfo: In repository : $userData" )
             dao.deleteUser(name)
             dao.insertUserInfo(mapper.mapUserDTOToEntity(userData))
             emit(Result.Success(data = mapper.mapUserEntityToDomain(dao.getUser(name))))
