@@ -7,31 +7,22 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.logging.Level.ALL
 import javax.inject.Singleton
 
 @Module
 class NetworkModule {
 
-//    @Provides
-//    @Singleton
-//    fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit{
-//        return Retrofit.Builder()
-//            .baseUrl(GithubAPI.BASE_URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .client(okHttpClient)
-//            .build()
-//    }
-
     @Provides
     @Singleton
-    fun providesDictionaryApi() : GithubAPI {
+    fun providesDictionaryApi(httpClient: OkHttpClient) : GithubAPI {
         return Retrofit.Builder()
             .baseUrl(GithubAPI.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
             .build()
             .create(GithubAPI::class.java)
     }
-
 
     @Provides
     @Singleton

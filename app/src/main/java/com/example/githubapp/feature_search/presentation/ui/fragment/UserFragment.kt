@@ -24,31 +24,23 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
     private fun setUpClickListeners() {
         binding.searchButton.setOnClickListener {
             var userName = "sksaikia"
-            if(userName.isNotBlank()){
+            if (userName.isNotBlank()) {
                 viewModel.getUserDetail(userName)
-//                viewModel.getUserDetail(userName).observe(viewLifecycleOwner, Observer {
-//                    Log.d("FATAL", "setUpClickListeners: " + it?.name)
-////                    when (it) {
-////                        is Result.Success -> onSuccessGetData(it.data)
-////                        is Result.Loading -> showProgressBar(true)
-////                        is Result.Error -> onFailureGetData(it)
-////                    }
-//                })
 
-            viewModel.user.observe(viewLifecycleOwner, Observer {
-                when (it) {
+                viewModel.user.observe(viewLifecycleOwner, Observer {
+                    when (it) {
                         is Result.Success -> onSuccessGetData(it.data)
                         is Result.Loading -> showProgressBar(true)
                         is Result.Error -> onFailureGetData(it)
                     }
-            })
+                })
                 binding.progressBar.show()
             }
         }
 
         binding.userDetails.root.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("user","sksaikia")
+            bundle.putString("user", "sksaikia")
             var repoFragment = RepositoryFragment()
             repoFragment.arguments = bundle
             goToRepoFrag(repoFragment)
@@ -64,9 +56,7 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
 
     private fun goToRepoFrag(repoFragment: RepositoryFragment) {
         val fragmentName = repoFragment.toString()
-        activity?.supportFragmentManager?.
-        beginTransaction()?.
-        replace(R.id.container,repoFragment)
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container, repoFragment)
             ?.addToBackStack(fragmentName)
             ?.commit()
     }
@@ -82,7 +72,7 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
         }
     }
 
-    private fun showProgressBar(state : Boolean) {
+    private fun showProgressBar(state: Boolean) {
         if (state)
             binding.progressBar.show()
         else
@@ -90,21 +80,22 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
     }
 
     private fun onFailureGetData(it: Result.Error<User>) {
-        Log.d("FATAL TEST", "onFailureGetData: " + it)
         showProgressBar(false)
-        Snackbar.make(binding.parent,"Error Occured",Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.parent, "Error Occured", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun onSuccessGetData(data: User?) {
         Log.d("FATAL SUCCESS", "success: " + data)
         showProgressBar(false)
         binding.userDetails.root.show()
-        binding.userDetails.userName.text = data?.name
-        binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"
-        //Set the image here
-        if (data?.avatar_url!=null){
-            ImageHandler.loadImage(data.avatar_url,binding.userDetails.userImage)
+        binding.userDetails.apply {
+            userName.text = data?.name
+            userRepositories.text = "Public Repositories : ${data?.public_repos}"
+            if (data?.avatar_url != null) {
+                ImageHandler.loadImage(data.avatar_url, userImage)
+            }
         }
+
     }
 
     override fun initiateViewModel(viewModelProvider: ViewModelProvider) =

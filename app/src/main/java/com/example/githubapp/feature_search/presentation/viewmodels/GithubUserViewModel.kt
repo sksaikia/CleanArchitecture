@@ -20,12 +20,11 @@ class GithubUserViewModel @Inject constructor(
     private val _user = MutableLiveData<Result<User>>()
     val user : LiveData<Result<User>> = _user
 
-
      fun getUserDetail(name: String) {
          viewModelScope.launch {
              githubUserUsecase.invoke(name).onStart {
                  _user.postValue(Result.Loading(true))
-             }.flowOn(dispatcherProvider.default)
+             }.flowOn(dispatcherProvider.io)
                  .collect { result ->
                      when(result) {
                          is Result.Success -> {
@@ -39,30 +38,3 @@ class GithubUserViewModel @Inject constructor(
          }
      }
 }
-
-
-//         viewModelScope.launch {
-//             when(val response = githubUserUsecase.invoke(name)){
-//                 is Result.Success -> {
-//                     _user.value = response
-//                 }
-//                 is Result.Error -> {
-//                     _user.value = Result.Error(response.cause,response.code,response.errorMessage)
-//                 }
-//             }
-//         }
-//         viewModelScope.launch {
-//                val response = githubUserUsecase.invoke(name)
-//
-//
-
-
-//             val userName = Transformations.switchMap(_user, {
-//                 is Result.Success -> {
-//                    _user
-//             }
-//                 is Result.Error -> {
-//
-//             }
-//             })
-//         }
