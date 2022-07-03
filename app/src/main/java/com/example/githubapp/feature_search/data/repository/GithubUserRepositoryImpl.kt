@@ -29,18 +29,9 @@ class GithubUserRepositoryImpl(
 
     override suspend fun getUserInfo(name: String): Flow<Result<User>> = flow{
 
-//        emit(Result.Loading)
-//        emit(getUserFromDb(name))
-//        val apiResult = getDataFromApi(name)
-//        if (apiResult is Result.Success){
-//            val userData = mapper.mapUserDTOToEntity(apiResult.data)
-//            insertUserInfoIntoDB(userData)
-//        }
-//
-//        emit(getUserFromDb(name))
         emit(Result.Loading(true))
-        val userFromDb = getUserFromDb(name)
-        emit(Result.Success(userFromDb))
+   //     val userFromDb = getUserFromDb(name)
+     //   emit(Result.Success(userFromDb))
         val userFromApi = try {
             api.getUserDetails(name)
         } catch (e : Exception) {
@@ -48,7 +39,6 @@ class GithubUserRepositoryImpl(
             null
         }
         userFromApi?.let { userData ->
-            Log.d("FATAL", "getUserInfo: In repository : $userData" )
             dao.deleteUser(name)
             dao.insertUserInfo(mapper.mapUserDTOToEntity(userData))
             emit(Result.Success(data = mapper.mapUserEntityToDomain(dao.getUser(name))))

@@ -43,7 +43,7 @@ class GitHubUserModule {
     fun provideDao(app : Application) : GithubUserDatabase {
         return Room.databaseBuilder(
             app, GithubUserDatabase::class.java,"user_db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
 }

@@ -25,7 +25,7 @@ class UserMapper {
         return User(
             public_repos = userEntity.userRepository,
             login = "",
-            avatar_url = "",
+            avatar_url = userEntity.userAvatarUrl,
             bio = "",
             company = "",
             created_at = "",
@@ -36,17 +36,12 @@ class UserMapper {
         )
     }
 
-    fun mapUserToUserEntity(user : User) : GithubUserEntity {
-        return GithubUserEntity(
-            userName = user.name!!,
-            userRepository = user.public_repos
-        )
-    }
 
     fun mapUserDTOToEntity(dto : UserDTO) : GithubUserEntity {
         return GithubUserEntity(
             userName = dto.login,
-            userRepository = dto.public_repos
+            userRepository = dto.public_repos,
+            userAvatarUrl = dto.avatar_url
         )
     }
 

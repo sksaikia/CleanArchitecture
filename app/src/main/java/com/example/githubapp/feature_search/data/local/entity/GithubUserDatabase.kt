@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [GithubUserEntity::class],
-    version = 1
+    version = 2
 )
 abstract class GithubUserDatabase : RoomDatabase(){
 
