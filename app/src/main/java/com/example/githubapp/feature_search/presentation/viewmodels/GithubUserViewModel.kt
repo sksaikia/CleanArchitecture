@@ -22,14 +22,19 @@ class GithubUserViewModel @Inject constructor(
 
 
      fun getUserDetail(name: String) {
-         // _user.value = Result.Loading
-
          viewModelScope.launch {
              githubUserUsecase.invoke(name).onStart {
-                 _user.postValue( Result.Loading)
+                 _user.postValue(Result.Loading(true))
              }.flowOn(dispatcherProvider.default)
-                 .collect {
-                     _user.postValue( Result.Success(it))
+                 .collect { result ->
+                     when(result) {
+                         is Result.Success -> {
+                            _user.postValue(result)
+                         }
+                         is Result.Error -> {
+                            _user.postValue(result)
+                         }
+                     }
                  }
          }
      }

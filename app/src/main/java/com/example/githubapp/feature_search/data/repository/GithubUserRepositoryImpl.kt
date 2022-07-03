@@ -12,6 +12,7 @@ import com.example.githubapp.feature_search.domain.repository.GithubUserReposito
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.lang.Exception
 
 class GithubUserRepositoryImpl(
     private val api : GithubAPI,
@@ -21,36 +22,36 @@ class GithubUserRepositoryImpl(
 
 
     suspend fun getUserFromDb(name : String) : User {
-        var user =  dao.getUser(name)
-        if (user==null)
-            user = GithubUserEntity(
-                "",
-                0,
-                null
-            )
+        var user = dao.getUser(name)
         return mapper.mapUserEntityToDomain(user)
     }
 
-    override suspend fun getUserInfo(name: String): Flow<User> = flow{
+    override suspend fun getUserInfo(name: String): Flow<Result<User>> = flow{
 
-        emit(getUserFromDb(name))
-        val apiResult = getDataFromApi(name)
-        if (apiResult is Result.Success){
-            val userData = mapper.mapUserDTOToEntity(apiResult.data)
-            insertUserInfoIntoDB(userData)
+//        emit(Result.Loading)
+//        emit(getUserFromDb(name))
+//        val apiResult = getDataFromApi(name)
+//        if (apiResult is Result.Success){
+//            val userData = mapper.mapUserDTOToEntity(apiResult.data)
+//            insertUserInfoIntoDB(userData)
+//        }
+//
+//        emit(getUserFromDb(name))
+        emit(Result.Loading(true))
+      //  val userFromDb = getUserFromDb(name)
+    //    emit(Result.Success(userFromDb))
+        val userFromApi = try {
+            api.getUserDetails(name)
+        } catch (e : Exception) {
+            e.printStackTrace()
+            null
         }
-
-        emit(getUserFromDb(name))
-
-    }
-
-    private suspend fun insertUserInfoIntoDB(userData: GithubUserEntity) {
-        dao.insertUserInfo(userData)
-    }
-
-
-    private suspend fun getDataFromApi(name: String): Result<UserDTO> {
-        return safeApiCall { api.getUserDetails(name) }
+        userFromApi?.let { userData ->
+            dao.deleteUser(name)
+            dao.insertUserInfo(mapper.mapUserDTOToEntity(userData))
+            emit(Result.Success(data = mapper.mapUserEntityToDomain(dao.getUser(name))))
+            emit(Result.Loading(true))
+        }
     }
 
 }

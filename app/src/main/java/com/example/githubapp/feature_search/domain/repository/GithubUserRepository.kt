@@ -7,5 +7,5 @@ import com.example.githubapp.feature_search.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface GithubUserRepository {
-    suspend fun getUserInfo(name: String) : Flow<User>
+    suspend fun getUserInfo(name: String) : Flow<Result<User>>
 }

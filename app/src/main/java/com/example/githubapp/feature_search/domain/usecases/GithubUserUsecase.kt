@@ -11,7 +11,7 @@ class GithubUserUsecase(
     private val repository: GithubUserRepository
 ) {
 
-    suspend operator fun invoke(word : String) : Flow<User> {
+    suspend operator fun invoke(word : String) : Flow<Result<User>> {
        return repository.getUserInfo(word)
     }
 

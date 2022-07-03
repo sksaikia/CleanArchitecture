@@ -13,9 +13,10 @@ class GithubRepoRepositoryImpl(
 ) : GithubRepoRepository, RemoteDataSource() {
 
     override suspend fun getRepoForUser(user: String) : Result<List<Repo>> {
-        return safeApiCall{
-            val repoDTOs = api.getRepoForUser(user)
-            mapper.mapRepoListToDomain(repoDTOs)
-        }
+//        return safeApiCall{
+//            val repoDTOs = api.getRepoForUser(user)
+//            mapper.mapRepoListToDomain(repoDTOs)
+//        }
+        return Result.Success( mapper.mapRepoListToDomain(api.getRepoForUser(user)))
     }
 }

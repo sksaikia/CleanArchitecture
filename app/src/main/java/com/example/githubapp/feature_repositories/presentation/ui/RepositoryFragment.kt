@@ -59,18 +59,20 @@ class RepositoryFragment : BaseDaggerFragment<FragmentRepositoryBinding,GithubRe
             binding.progressBar.hide()
     }
 
-    private fun onErrorGetData(result: Result.Error) {
+    private fun onErrorGetData(result: Result.Error<List<Repo>>) {
         Log.d("FATAL TEST", "onFailureGetData: " + result)
         showProgressBar(false)
     }
 
-    private fun onSuccessGetData(data: List<Repo>) {
+    private fun onSuccessGetData(data: List<Repo>?) {
         Log.d("FATAL", "onSuccessGetData: $data")
         showProgressBar(false)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
         val adapter = GithubRepoAdapter()
-        adapter.setList(data)
+        if (data != null) {
+            adapter.setList(data)
+        }
         binding.recyclerView.adapter = adapter
 
     }

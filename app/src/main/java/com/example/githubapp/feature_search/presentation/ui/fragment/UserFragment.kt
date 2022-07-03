@@ -89,20 +89,20 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
             binding.progressBar.hide()
     }
 
-    private fun onFailureGetData(it: Result.Error) {
+    private fun onFailureGetData(it: Result.Error<User>) {
         Log.d("FATAL TEST", "onFailureGetData: " + it)
         showProgressBar(false)
         Snackbar.make(binding.parent,"Error Occured",Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun onSuccessGetData(data: User) {
+    private fun onSuccessGetData(data: User?) {
         Log.d("FATAL SUCCESS", "success: " + data)
         showProgressBar(false)
         binding.userDetails.root.show()
         binding.userDetails.userName.text = data?.name
         binding.userDetails.userRepositories.text = "Public Repositories : ${data?.public_repos}"
         //Set the image here
-        if (data.avatar_url!=null){
+        if (data?.avatar_url!=null){
             ImageHandler.loadImage(data.avatar_url,binding.userDetails.userImage)
         }
     }

@@ -23,14 +23,14 @@ class GithubRepoViewModel @Inject constructor(
         if (user.isBlank()){
             return
         }
-        _repos.value = Result.Loading
+        _repos.value = Result.Loading(true)
         viewModelScope.launch {
             when(val response = githubRepoUsecase.invoke(user)) {
                 is Result.Success -> {
                     _repos.value = response
                 }
                 is Result.Error -> {
-                    _repos.value = Result.Error(response.cause,response.code,response.errorMessage)
+                    _repos.value = Result.Error(response.message.toString())
                 }
             }
         }
