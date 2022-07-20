@@ -1,16 +1,17 @@
-package com.example.githubapp.feature_repositories.presentation.ui.adapter.test
+package com.example.githubapp.feature_repositories.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubapp.feature_repositories.domain.model.Repo
-import com.example.githubapp.feature_repositories.domain.model.WrapperData
+import com.example.githubapp.core.data.BaseItemModel
+import com.example.githubapp.core.presentation.viewholder.AbstractViewHolder
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.factory.ItemTypeFactory
 
 class GithubRepoAdapter2(
     private val adapterTypeFactory: ItemTypeFactory
 ) : RecyclerView.Adapter<AbstractViewHolder<BaseItemModel>>() {
 
-    val repos = mutableListOf<Repo>()
+    val repos = mutableListOf<BaseItemModel>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,7 +33,7 @@ class GithubRepoAdapter2(
         return repos.size
     }
 
-    fun setList(list: List<Repo>) {
+    fun setList(list: List<BaseItemModel>) {
         this.repos.clear()
         this.repos.addAll(list)
         notifyDataSetChanged()

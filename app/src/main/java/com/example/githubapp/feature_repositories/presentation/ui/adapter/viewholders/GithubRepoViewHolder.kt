@@ -1,9 +1,10 @@
-package com.example.githubapp.feature_repositories.presentation.ui.adapter.test
+package com.example.githubapp.feature_repositories.presentation.ui.adapter.viewholders
 
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.example.githubapp.R
+import com.example.githubapp.core.presentation.viewholder.AbstractViewHolder
 import com.example.githubapp.feature_repositories.domain.model.Repo
 
 class GithubRepoViewHolder(view: View) : AbstractViewHolder<Repo>(view) {

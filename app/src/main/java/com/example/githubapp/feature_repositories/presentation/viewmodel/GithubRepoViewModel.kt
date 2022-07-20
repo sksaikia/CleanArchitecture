@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubapp.core.network.Result
-import com.example.githubapp.core.network.launchCatchError
-import com.example.githubapp.feature_repositories.domain.model.Repo
 import com.example.githubapp.feature_repositories.domain.usecases.GithubRepoUsecase
-import com.example.githubapp.feature_search.domain.model.User
+import com.example.githubapp.core.data.BaseItemModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +14,8 @@ class GithubRepoViewModel @Inject constructor(
     private val githubRepoUsecase: GithubRepoUsecase
 ) : ViewModel(){
 
-    private val _repos = MutableLiveData<Result<List<Repo>>>()
-    val repos : LiveData<Result<List<Repo>>> = _repos
+    private val _repos = MutableLiveData<Result<List<BaseItemModel>>>()
+    val repos : LiveData<Result<List<BaseItemModel>>> = _repos
 
     fun getUserRepos(user : String) {
         if (user.isBlank()){

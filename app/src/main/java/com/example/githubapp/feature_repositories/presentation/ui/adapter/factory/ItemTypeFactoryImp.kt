@@ -1,8 +1,12 @@
-package com.example.githubapp.feature_repositories.presentation.ui.adapter.test
+package com.example.githubapp.feature_repositories.presentation.ui.adapter.factory
 
 import android.view.View
+import com.example.githubapp.core.presentation.viewholder.AbstractViewHolder
 import com.example.githubapp.feature_repositories.domain.model.Repo
 import com.example.githubapp.feature_repositories.domain.model.Test
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.factory.ItemTypeFactory
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.viewholders.GithubRepoViewHolder
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.viewholders.TestViewHolder
 
 class ItemTypeFactoryImp : ItemTypeFactory {
     override fun type(repo: Repo): Int {

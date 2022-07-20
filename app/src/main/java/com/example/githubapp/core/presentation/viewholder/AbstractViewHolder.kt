@@ -1,4 +1,4 @@
-package com.example.githubapp.feature_repositories.presentation.ui.adapter.test
+package com.example.githubapp.core.presentation.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

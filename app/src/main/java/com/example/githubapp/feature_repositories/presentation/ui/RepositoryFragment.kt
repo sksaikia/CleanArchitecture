@@ -1,12 +1,8 @@
 package com.example.githubapp.feature_repositories.presentation.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.MainApplication
@@ -14,16 +10,11 @@ import com.example.githubapp.common.extensions.hide
 import com.example.githubapp.common.extensions.show
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.core.presentation.BaseDaggerFragment
-import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentRepositoryBinding
-import com.example.githubapp.feature_repositories.domain.model.Repo
-import com.example.githubapp.feature_repositories.domain.model.WrapperData
 import com.example.githubapp.feature_repositories.presentation.viewmodel.GithubRepoViewModel
-import com.example.githubapp.feature_repositories.presentation.ui.adapter.GithubRepoAdapter
-import com.example.githubapp.feature_repositories.presentation.ui.adapter.test.GithubRepoAdapter2
-import com.example.githubapp.feature_repositories.presentation.ui.adapter.test.ItemTypeFactoryImp
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import com.example.githubapp.core.data.BaseItemModel
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.GithubRepoAdapter2
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.factory.ItemTypeFactoryImp
 
 class RepositoryFragment : BaseDaggerFragment<FragmentRepositoryBinding,GithubRepoViewModel>() {
 
@@ -62,12 +53,12 @@ class RepositoryFragment : BaseDaggerFragment<FragmentRepositoryBinding,GithubRe
             binding.progressBar.hide()
     }
 
-    private fun onErrorGetData(result: Result.Error<List<Repo>>) {
+    private fun onErrorGetData(result: Result.Error<List<BaseItemModel>>) {
         Log.d("FATAL TEST", "onFailureGetData: " + result)
         showProgressBar(false)
     }
 
-    private fun onSuccessGetData(data: List<Repo>?) {
+    private fun onSuccessGetData(data: List<BaseItemModel>?) {
         Log.d("FATAL", "onSuccessGetData: $data")
         showProgressBar(false)
         binding.recyclerView.layoutManager =
