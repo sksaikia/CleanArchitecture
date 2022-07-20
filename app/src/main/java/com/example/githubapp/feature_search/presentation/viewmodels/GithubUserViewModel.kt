@@ -5,6 +5,7 @@ import com.example.githubapp.core.network.dispatchers.CoroutineDispatcherProvide
 import com.example.githubapp.core.network.Result
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.domain.usecases.GithubUserUsecase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
@@ -24,7 +25,7 @@ class GithubUserViewModel @Inject constructor(
          viewModelScope.launch {
              githubUserUsecase.invoke(name).onStart {
                  _user.postValue(Result.Loading(true))
-             }.flowOn(dispatcherProvider.io)
+             }.flowOn(Dispatchers.IO)
                  .collect { result ->
                      when(result) {
                          is Result.Success -> {

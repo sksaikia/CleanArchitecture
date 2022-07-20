@@ -81,7 +81,7 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
 
     private fun onFailureGetData(it: Result.Error<User>) {
         showProgressBar(false)
-        Snackbar.make(binding.parent, "Error Occured", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.parent, "Error Occured ${it.message}", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun onSuccessGetData(data: User?) {

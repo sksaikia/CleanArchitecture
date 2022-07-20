@@ -1,6 +1,7 @@
 package com.example.githubapp.core.network
 
 import android.util.Log
+import com.example.githubapp.core.network.dispatchers.CoroutineDispatcherProvider
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,7 +10,47 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-open class RemoteDataSource {
+open class RemoteDataSource() {
+
+    open suspend fun <T> safeApiCall(apiCall : suspend () -> T, error : suspend (String) -> Unit) : Unit {
+        return withContext(Dispatchers.IO) {
+            try {
+                 apiCall.invoke()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                when(e) {
+                    is HttpException -> error("Http Exception with code : ${e.code()}")
+                    is SocketTimeoutException -> error("Socket Exception with code ${e.message}")
+                    is IOException -> error("Io Exception with code ${e.message}")
+                    is UnknownHostException -> error("Unknown Exception with code }")
+                    else -> error("Http Exception with code }")
+                }
+
+            }
+        }
+    }
+//    open suspend fun <T> safeApiCall(apiCall : suspend () -> T) : Result<T> {
+//        return withContext(Dispatchers.IO){
+//            try {
+//                Result.Success(apiCall.invoke())
+//            } catch (e : Exception) {
+//                when(e) {
+//                    is HttpException -> {
+//                        val result = when(e.code()) {
+//                            in 400..451 -> error(e.message())
+//                            in 500..509 -> error(e.message())
+//                            else -> error(e.message())
+//                        }
+//                        result
+//                    }
+//                    is UnknownHostException -> error( "No internet connection")
+//                    is SocketTimeoutException -> error("Slow Internet")
+//                    is IOException -> error( e.message)
+//                    else -> error("Unknown Error")
+//                }
+//            }
+//        }
+    }
 //    open suspend fun <T> safeApiCall(apiCall : suspend () -> T) : Result<out T> {
 //        return withContext(Dispatchers.IO){
 //            try {
@@ -33,10 +74,6 @@ open class RemoteDataSource {
 //        }
 //    }
 //
-//    private fun error(cause : HttpResult, code : Int?, errorMessage : String?) : Result.Error {
-//        return Result.Error(cause, code,  errorMessage)
-//    }
-//
 //    private fun parseHttpError(throwable: HttpException) : Result<Nothing> {
 //        return try {
 //            val errorBody = throwable.response()?.errorBody()?.string() ?: "Unknown HTTP error body"
@@ -47,6 +84,4 @@ open class RemoteDataSource {
 //        } catch (exception : Exception){
 //            error(HttpResult.CLIENT_ERROR, throwable.code(), exception.localizedMessage)
 //        }
-//    }
-
-}
+////    }
