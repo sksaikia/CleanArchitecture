@@ -17,8 +17,11 @@ import com.example.githubapp.core.presentation.BaseDaggerFragment
 import com.example.githubapp.core.utils.injectViewModel
 import com.example.githubapp.databinding.FragmentRepositoryBinding
 import com.example.githubapp.feature_repositories.domain.model.Repo
+import com.example.githubapp.feature_repositories.domain.model.WrapperData
 import com.example.githubapp.feature_repositories.presentation.viewmodel.GithubRepoViewModel
 import com.example.githubapp.feature_repositories.presentation.ui.adapter.GithubRepoAdapter
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.test.GithubRepoAdapter2
+import com.example.githubapp.feature_repositories.presentation.ui.adapter.test.ItemTypeFactoryImp
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -69,7 +72,7 @@ class RepositoryFragment : BaseDaggerFragment<FragmentRepositoryBinding,GithubRe
         showProgressBar(false)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-        val adapter = GithubRepoAdapter()
+        val adapter = GithubRepoAdapter2(ItemTypeFactoryImp())
         if (data != null) {
             adapter.setList(data)
         }
