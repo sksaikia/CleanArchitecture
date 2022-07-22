@@ -20,9 +20,9 @@ class GithubRepoRepositoryImpl(
         var result = mutableListOf<BaseItemModel>()
         var state = false
         dataFromApi.forEach {
-            result.add(it)
+            result.add(it.toRepoUiModel())
             if (state) {
-                result.add(Test("${it.hashCode()}"))
+                result.add(Test("${it.hashCode()}").toTestUiModel())
             }
             state = !state
         }
