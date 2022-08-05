@@ -20,14 +20,14 @@ class GithubRepoModule {
         return GithubRepoUsecase(githubRepoRepository)
     }
 
-    @Provides
-    @Singleton
-    fun provideGithubRepoRepository(
-        api : GithubAPI,
-        mapper : RepoMapper
-    ) : GithubRepoRepository {
-        return GithubRepoRepositoryImpl(api,mapper)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideGithubRepoRepository(
+//        api : GithubAPI,
+//        mapper : RepoMapper
+//    ) : GithubRepoRepository {
+//        return GithubRepoRepositoryImpl(api,mapper)
+//    }
 
     @Provides
     @Singleton

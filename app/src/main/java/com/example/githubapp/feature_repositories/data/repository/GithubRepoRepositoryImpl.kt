@@ -7,9 +7,9 @@ import com.example.githubapp.feature_repositories.data.mapper.RepoMapper
 import com.example.githubapp.feature_repositories.domain.model.Test
 import com.example.githubapp.feature_repositories.domain.repository.GithubRepoRepository
 import com.example.githubapp.core.data.BaseItemModel
-import kotlin.random.Random
+import javax.inject.Inject
 
-class GithubRepoRepositoryImpl(
+class GithubRepoRepositoryImpl @Inject constructor(
     private val api : GithubAPI,
     private val mapper : RepoMapper
 ) : GithubRepoRepository, RemoteDataSource() {

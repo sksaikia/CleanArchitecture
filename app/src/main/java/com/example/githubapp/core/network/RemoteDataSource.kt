@@ -1,10 +1,5 @@
 package com.example.githubapp.core.network
 
-import android.util.Log
-import com.example.githubapp.core.network.dispatchers.CoroutineDispatcherProvider
-import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -12,8 +7,7 @@ import java.net.UnknownHostException
 
 open class RemoteDataSource() {
 
-    open suspend fun <T> safeApiCall(apiCall : suspend () -> T, error : suspend (String) -> Unit) : Unit {
-        return withContext(Dispatchers.IO) {
+    open suspend fun <T> safeApiCall(apiCall : suspend () -> T, error : suspend (String) -> Unit) {
             try {
                  apiCall.invoke()
             } catch (e: Exception) {
@@ -50,7 +44,6 @@ open class RemoteDataSource() {
 //                }
 //            }
 //        }
-    }
 //    open suspend fun <T> safeApiCall(apiCall : suspend () -> T) : Result<out T> {
 //        return withContext(Dispatchers.IO){
 //            try {

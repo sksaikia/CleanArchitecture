@@ -22,15 +22,15 @@ class GitHubUserModule {
         return GithubUserUsecase(repository)
     }
 
-    @Provides
-    @Singleton
-    fun provideGithubUserRepository(
-        api : GithubAPI,
-        db : GithubUserDatabase,
-        mapper : UserMapper)
-    : GithubUserRepository{
-        return GithubUserRepositoryImpl(api,db.dao,mapper)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideGithubUserRepository(
+//        api : GithubAPI,
+//        db : GithubUserDatabase,
+//        mapper : UserMapper)
+//    : GithubUserRepository{
+//        return GithubUserRepositoryImpl(api,db.dao,mapper, )
+//    }
 
     @Provides
     @Singleton

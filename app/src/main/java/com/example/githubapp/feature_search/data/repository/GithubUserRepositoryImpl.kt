@@ -4,45 +4,38 @@ import android.util.Log
 import com.example.githubapp.common.network.GithubAPI
 import com.example.githubapp.core.network.RemoteDataSource
 import com.example.githubapp.core.network.Result
-import com.example.githubapp.feature_search.data.local.entity.GithubUserDao
-import com.example.githubapp.feature_search.data.local.entity.GithubUserEntity
+import com.example.githubapp.feature_search.data.local.entity.GithubUserDatabase
 import com.example.githubapp.feature_search.data.mapper.UserMapper
-import com.example.githubapp.feature_search.data.remote.dto.UserDTO
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.domain.repository.GithubUserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
+import javax.inject.Inject
 
-class GithubUserRepositoryImpl(
+class GithubUserRepositoryImpl @Inject constructor (
     private val api: GithubAPI,
-    private val dao: GithubUserDao,
+    private val db: GithubUserDatabase,
     private val mapper: UserMapper
 ) : GithubUserRepository, RemoteDataSource() {
 
-    suspend fun getUserFromDb(name: String): User {
-        var user = dao.getUser(name)
-        return mapper.mapUserEntityToDomain(user)
-    }
+    val dao = db.dao
 
-    override suspend fun getUserInfo(name: String): Flow<Result<User>> = channelFlow {
+    override suspend fun getUserInfo(name: String): Flow<Result<User>> = flow<Result<User>> {
 
-        send(Result.Loading(true))
+        emit(Result.Loading(true))
 
-        safeApiCall( {
+        safeApiCall({
             val userFromApi =  api.getUserDetails(name)
             userFromApi.let { userData ->
                 dao.deleteUser(name)
                 dao.insertUserInfo(mapper.mapUserDTOToEntity(userData))
-                send(Result.Success(data = mapper.mapUserEntityToDomain(dao.getUser(name))))
-                send(Result.Loading(false))
+                emit(Result.Success(data = mapper.mapUserEntityToDomain(dao.getUser(name))))
+                emit(Result.Loading(false))
             }
         },{ exception ->
             Log.d("fatal22", "getUserInfo: $exception")
-            send(Result.Error(exception))
-        })
+            emit(Result.Error(exception))
+        } )
 //        if (userFromApi==null){
 //            emit(Result.Error("Tatakae",null))
 //        }
@@ -57,8 +50,6 @@ class GithubUserRepositoryImpl(
 //        }else {
 //            emit(mapper.mapUserDTOToDomain(userFromApi))
 //        }
-
-
     }
 
 }

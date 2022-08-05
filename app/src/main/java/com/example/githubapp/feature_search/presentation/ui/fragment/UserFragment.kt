@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.githubapp.MainApplication
 import com.example.githubapp.R
 import com.example.githubapp.common.extensions.hide
@@ -17,6 +18,8 @@ import com.example.githubapp.feature_repositories.presentation.ui.RepositoryFrag
 import com.example.githubapp.feature_search.domain.model.User
 import com.example.githubapp.feature_search.presentation.viewmodels.GithubUserViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel>() {
@@ -27,13 +30,32 @@ class UserFragment : BaseDaggerFragment<FragmentUserBinding, GithubUserViewModel
             if (userName.isNotBlank()) {
                 viewModel.getUserDetail(userName)
 
-                viewModel.user.observe(viewLifecycleOwner, Observer {
-                    when (it) {
-                        is Result.Success -> onSuccessGetData(it.data)
-                        is Result.Loading -> showProgressBar(true)
-                        is Result.Error -> onFailureGetData(it)
+                lifecycleScope.launch {
+                    viewModel.userFlow.collect {
+                        when(it) {
+                            is Result.Success -> {
+                                onSuccessGetData(it.data)
+                                Log.d("FATAL", "setUpClickListeners: SUCCESS")
+                            }
+                            is Result.Loading -> {
+                                showProgressBar(true)
+                                Log.d("FATAL", "setUpClickListeners: Loading")
+                            }
+                            is Result.Error -> {
+                                onFailureGetData(it)
+                                Log.d("FATAL", "setUpClickListeners: Error")
+                            }
+                        }
                     }
-                })
+                }
+
+//                viewModel.user.observe(viewLifecycleOwner, Observer {
+//                    when (it) {
+//                        is Result.Success -> onSuccessGetData(it.data)
+//                        is Result.Loading -> showProgressBar(true)
+//                        is Result.Error -> onFailureGetData(it)
+//                    }
+//                })
                 binding.progressBar.show()
             }
         }
